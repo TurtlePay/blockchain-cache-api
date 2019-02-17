@@ -706,7 +706,7 @@ app.post('/getwalletsyncdata', (req, res) => {
   const startHeight = toNumber(req.body.startHeight)
   const startTimestamp = toNumber(req.body.startTimestamp)
   const blockHashCheckpoints = req.body.blockHashCheckpoints || []
-  const blockCount = toNumber(req.body.blockCount) || 100;
+  const blockCount = toNumber(req.body.blockCount) || 100
 
   blockHashCheckpoints.forEach((checkpoint) => {
     /* If any of the supplied block hashes aren't hexadecimal then we're done */
