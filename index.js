@@ -558,6 +558,31 @@ app.post('/outputs/:amount', (req, res) => {
     })
 })
 
+app.get('/keyImage/:search', (req, res) => {
+  const start = process.hrtime()
+  const idx = req.params.search
+
+  if (!isHex(idx) || idx.length !== 64) {
+    Helpers.logHTTPError(req, 'Transaction hash supplied is not in a valid format', process.hrtime(start))
+    return res.status(400).send()
+  }
+
+  database.getKeyImageUse(idx)
+    .then(image => {
+      Helpers.logHTTPRequest(req, process.hrtime(start))
+
+      if (image.length === 1) {
+        return res.json(image[0])
+      }
+
+      return res.status(404).send()
+    })
+    .catch(error => {
+      Helpers.logHTTPError(req, error, process.hrtime(start))
+      return res.status(404).send()
+    })
+})
+
 /* Get the current transaction pool */
 app.get('/transaction/pool', (req, res) => {
   const start = process.hrtime()
