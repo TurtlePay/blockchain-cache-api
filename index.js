@@ -563,7 +563,7 @@ app.get('/keyImage/:search', (req, res) => {
   const idx = req.params.search
 
   if (!isHex(idx) || idx.length !== 64) {
-    Helpers.logHTTPError(req, 'Transaction hash supplied is not in a valid format', process.hrtime(start))
+    Helpers.logHTTPError(req, 'Key Image supplied is not in a valid format', process.hrtime(start))
     return res.status(400).send()
   }
 
@@ -579,7 +579,7 @@ app.get('/keyImage/:search', (req, res) => {
     })
     .catch(error => {
       Helpers.logHTTPError(req, error, process.hrtime(start))
-      return res.status(404).send()
+      return res.status(500).send()
     })
 })
 
