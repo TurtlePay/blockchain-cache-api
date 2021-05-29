@@ -268,6 +268,22 @@ app.get('/chain/stats', (req, res) => {
     })
 })
 
+/* Returns the average difficulty and network hashrate over the last 2,880 (1 day) blocks */
+app.get('/chain/difficulty', async (req, res) => {
+  const start = process.hrtime()
+
+  try {
+    const averageDifficulty = await database.get24HourDifficulty()
+
+    Helpers.logHTTPRequest(req, process.hrtime(start))
+
+    return res.json(averageDifficulty)
+  } catch (error) {
+    Helpers.logHTTPError(req, error, process.hrtime(start))
+    return res.status(500).send()
+  }
+})
+
 /* Submit a new block to the network */
 app.post('/block', (req, res) => {
   const start = process.hrtime()
